@@ -1319,7 +1319,7 @@ document.addEventListener('visibilitychange', () => {
 // Service Worker registration for offline support
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('./sw.js')
             .then(registration => {
                 console.log('🔧 Service Worker registered successfully');
             })
@@ -1328,3 +1328,9 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+
+// Initialize the game when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🎯 DOM loaded, starting WordBuddy game...');
+    window.game = new WordBuddyGame();
+});
