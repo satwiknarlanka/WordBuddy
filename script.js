@@ -201,56 +201,82 @@ class WordBuddyGame {
     initializeSpeechRecognition() {
         console.log('🎤 Initializing speech recognition...');
         
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        // Check browser support first
+        const hasWebkitSpeechRecognition = 'webkitSpeechRecognition' in window;
+        const hasSpeechRecognition = 'SpeechRecognition' in window;
+        
+        console.log('🎤 Browser support check:');
+        console.log('  - webkitSpeechRecognition:', hasWebkitSpeechRecognition);
+        console.log('  - SpeechRecognition:', hasSpeechRecognition);
+        console.log('  - User Agent:', navigator.userAgent);
+        console.log('  - Protocol:', window.location.protocol);
+        console.log('  - Is secure context:', window.isSecureContext);
+        
+        if (hasWebkitSpeechRecognition || hasSpeechRecognition) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             console.log('🎤 SpeechRecognition class found:', SpeechRecognition);
             
-            this.speechRecognition = new SpeechRecognition();
-            this.speechRecognition.continuous = false;
-            this.speechRecognition.interimResults = false;
-            
-            // Try a simple English language code - some browsers need this
             try {
-                this.speechRecognition.lang = 'en-US'; // Most widely supported
-                console.log('🎤 Language set to en-US');
-            } catch (error) {
-                console.warn('Could not set language, using default:', error);
-            }
-            
-            // Mobile-specific optimizations
-            this.speechRecognition.maxAlternatives = 3;
-            
-            this.speechRecognition.onstart = () => {
-                console.log('🎤 Speech recognition started');
-                this.speechRecognitionActive = true;
-            };
-            
-            this.speechRecognition.onend = () => {
-                console.log('🎤 Speech recognition ended');
+                this.speechRecognition = new SpeechRecognition();
+                this.speechRecognition.continuous = false;
+                this.speechRecognition.interimResults = false;
+                
+                // Try a simple English language code - some browsers need this
+                try {
+                    this.speechRecognition.lang = 'en-US'; // Most widely supported
+                    console.log('🎤 Language set to en-US');
+                } catch (error) {
+                    console.warn('Could not set language, using default:', error);
+                }
+                
+                // Mobile-specific optimizations
+                this.speechRecognition.maxAlternatives = 3;                
+                this.speechRecognition.onstart = () => {
+                    console.log('🎤 Speech recognition started');
+                    this.speechRecognitionActive = true;
+                };
+                
+                this.speechRecognition.onend = () => {
+                    console.log('🎤 Speech recognition ended');
+                    this.speechRecognitionActive = false;
+                    this.resetListenButton();
+                };
+                
+                this.speechRecognition.onresult = (event) => {
+                    const result = event.results[0][0].transcript.toLowerCase().trim();
+                    const confidence = event.results[0][0].confidence;
+                    console.log(`🎤 Speech result: "${result}" (confidence: ${confidence})`);
+                    this.handleSpeechResult(result, confidence);
+                };
+                
+                this.speechRecognition.onerror = (event) => {
+                    console.warn('🎤 Speech recognition error:', event.error, event);
+                    console.log('🎤 Full error event:', event); // DEBUG: Let's see exactly what's happening
+                    this.handleSpeechError(event.error);
+                };
+                
+                this.speechSupported = true;
                 this.speechRecognitionActive = false;
-                this.resetListenButton();
-            };
-            
-            this.speechRecognition.onresult = (event) => {
-                const result = event.results[0][0].transcript.toLowerCase().trim();
-                const confidence = event.results[0][0].confidence;
-                console.log(`🎤 Speech result: "${result}" (confidence: ${confidence})`);
-                this.handleSpeechResult(result, confidence);
-            };
-            
-            this.speechRecognition.onerror = (event) => {
-                console.warn('🎤 Speech recognition error:', event.error, event);
-                console.log('🎤 Full error event:', event); // DEBUG: Let's see exactly what's happening
-                this.handleSpeechError(event.error);
-            };
-            
-            this.speechSupported = true;
-            this.speechRecognitionActive = false;
-            console.log('🎤 Speech recognition initialized');
+                console.log('🎤 Speech recognition initialized successfully');
+                
+            } catch (error) {
+                console.error('🎤 Failed to create speech recognition:', error);
+                this.speechSupported = false;
+            }
         } else {
             console.warn('🎤 Speech recognition not supported');
+            console.warn('  - Possible reasons:');
+            console.warn('    1. Browser does not support Web Speech API');
+            console.warn('    2. Not running on HTTPS (required for most browsers)');
+            console.warn('    3. Browser privacy settings blocking speech recognition');
             this.speechSupported = false;
         }
+        
+        // Log final state
+        console.log('🎤 Final speech recognition state:');
+        console.log('  - speechSupported:', this.speechSupported);
+        console.log('  - settings.speechRecognition:', this.settings.speechRecognition);
+        console.log('  - Will show speech controls:', this.speechSupported && this.settings.speechRecognition);
         
         // Update UI based on speech support
         this.updateSpeechUI();
@@ -791,8 +817,19 @@ class WordBuddyGame {
     }
     
     startSpeechRecognition() {
+        console.log('🎤 startSpeechRecognition called');
+        console.log('  - speechSupported:', this.speechSupported);
+        console.log('  - settings.speechRecognition:', this.settings.speechRecognition);
+        console.log('  - speechRecognition object:', this.speechRecognition);
+        
         if (!this.speechSupported || !this.settings.speechRecognition) {
             console.warn('🎤 Speech recognition not available');
+            if (!this.speechSupported) {
+                console.warn('  - Reason: Browser does not support speech recognition');
+            }
+            if (!this.settings.speechRecognition) {
+                console.warn('  - Reason: Speech recognition disabled in settings');
+            }
             this.showMessage('Speech recognition not available. Use the "👍 I Said It!" button instead.', 'info');
             return;
         }
@@ -1277,11 +1314,20 @@ class WordBuddyGame {
         if (saved) {
             this.settings = { ...this.settings, ...JSON.parse(saved) };
             
-            // Apply settings to UI
-            document.getElementById('volume-slider').value = this.settings.volume * 100;
-            const speechToggle = document.getElementById('speech-toggle');
-            speechToggle.classList.toggle('active', this.settings.speechRecognition);
-            speechToggle.textContent = this.settings.speechRecognition ? 'ON' : 'OFF';
+            // Apply settings to UI after DOM is ready
+            setTimeout(() => {
+                const volumeSlider = document.getElementById('volume-slider');
+                const speechToggle = document.getElementById('speech-toggle');
+                
+                if (volumeSlider) {
+                    volumeSlider.value = this.settings.volume * 100;
+                }
+                
+                if (speechToggle) {
+                    speechToggle.classList.toggle('active', this.settings.speechRecognition);
+                    speechToggle.textContent = this.settings.speechRecognition ? 'ON' : 'OFF';
+                }
+            }, 100);
             
             console.log('⚙️ Settings loaded');
         }
@@ -1322,6 +1368,28 @@ const celebrationCSS = `
     0% { transform: translate(-50%, -60%); opacity: 0; }
     100% { transform: translate(-50%, -50%); opacity: 1; }
 }
+
+@keyframes pronounceWord {
+    0% { transform: scale(1); color: inherit; }
+    50% { transform: scale(1.1); color: #4CAF50; }
+    100% { transform: scale(1); color: inherit; }
+}
+
+@keyframes highlightPhonetic {
+    0% { transform: scale(1); background-color: transparent; }
+    50% { transform: scale(1.05); background-color: rgba(255, 193, 7, 0.3); }
+    100% { transform: scale(1); background-color: transparent; }
+}
+
+@keyframes slideInDown {
+    0% { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes slideOutUp {
+    0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+}
 `;
 
 // Inject animation CSS
@@ -1333,6 +1401,13 @@ document.head.appendChild(style);
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🎯 WordBuddy: DOM loaded, starting game...');
     window.wordBuddyGame = new WordBuddyGame();
+    
+    // Make debug function available globally
+    window.wordBuddyGame.makeDebugAvailable();
+    
+    // Optional: run debug immediately to help troubleshooting
+    // Uncomment the next line if you want automatic debug on load
+    setTimeout(() => window.wordBuddyGame.debugSpeechRecognition(), 2000);
 });
 
 // Handle page visibility for audio management
