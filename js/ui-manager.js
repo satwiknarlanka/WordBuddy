@@ -395,6 +395,65 @@ export class UIManager {
         }, 100);
     }
 
+    showBrowserCompatibilityWarning(browserInfo) {
+        // Show a user-friendly message about browser compatibility
+        let message = '';
+        let suggestion = '';
+        
+        if (browserInfo.isSafari) {
+            message = '🦎 Safari has limited speech recognition support';
+            suggestion = 'For the best experience, try using Chrome on desktop or mobile.';
+        } else if (browserInfo.isEdge) {
+            message = '🌐 Edge has limited speech recognition support';
+            suggestion = 'For better compatibility, try using Chrome.';
+        } else if (browserInfo.isFirefox) {
+            message = '🦊 Firefox doesn\'t support speech recognition';
+            suggestion = 'Please use Chrome or Safari for speech features.';
+        } else {
+            message = '🌐 Your browser has limited speech recognition support';
+            suggestion = 'For the best experience, try using Chrome.';
+        }
+        
+        // Show a temporary info banner
+        const banner = document.createElement('div');
+        banner.className = 'browser-compatibility-banner';
+        banner.innerHTML = `
+            <div style="margin-bottom: 8px; font-weight: bold;">${message}</div>
+            <div style="font-size: 0.9em;">${suggestion}</div>
+            <div style="margin-top: 8px; font-size: 0.8em; opacity: 0.8;">
+                You can still play using the "👍 I Said It!" button.
+            </div>
+        `;
+        
+        banner.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 10000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: slideInDown 0.5s ease-out;
+        `;
+        
+        document.body.appendChild(banner);
+        
+        // Auto-remove after 8 seconds
+        setTimeout(() => {
+            if (banner.parentNode) {
+                banner.style.animation = 'slideOutUp 0.5s ease-in';
+                setTimeout(() => {
+                    if (banner.parentNode) {
+                        banner.parentNode.removeChild(banner);
+                    }
+                }, 500);
+            }
+        }, 8000);
+    }
+
     addButtonPressEffect(button) {
         if (button) {
             button.style.transform = 'scale(0.95)';

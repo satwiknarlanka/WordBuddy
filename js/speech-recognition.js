@@ -18,16 +18,71 @@ export class SpeechRecognitionManager {
     initialize() {
         console.log('🎤 Initializing speech recognition...');
         
-        // Check browser support first
-        const hasWebkitSpeechRecognition = 'webkitSpeechRecognition' in window;
-        const hasSpeechRecognition = 'SpeechRecognition' in window;
+        // Detect browser type with more specific Edge detection
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg');
+        const isEdgeChromium = userAgent.includes('edg/'); // New Chromium-based Edge
+        const isEdgeLegacy = userAgent.includes('edge/'); // Old Edge
+        const isEdge = isEdgeChromium || isEdgeLegacy;
+        const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
+        const isFirefox = userAgent.includes('firefox');
+        const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
         
-        console.log('🎤 Browser support check:');
-        console.log('  - webkitSpeechRecognition:', hasWebkitSpeechRecognition);
-        console.log('  - SpeechRecognition:', hasSpeechRecognition);
+        console.log('🎤 Browser detection:');
+        console.log('  - Chrome:', isChrome);
+        console.log('  - Edge (Chromium):', isEdgeChromium);
+        console.log('  - Edge (Legacy):', isEdgeLegacy);
+        console.log('  - Safari:', isSafari);
+        console.log('  - Firefox:', isFirefox);
+        console.log('  - Mobile:', isMobile);
         console.log('  - User Agent:', navigator.userAgent);
         console.log('  - Protocol:', window.location.protocol);
         console.log('  - Is secure context:', window.isSecureContext);
+        
+        // Edge-specific blocking - Edge has known issues with Web Speech API
+        if (isEdge) {
+            console.warn('🎤 Edge detected: Disabling speech recognition due to known compatibility issues');
+            console.warn('  - Edge (both Legacy and Chromium) has unreliable Web Speech API support');
+            console.warn('  - Speech recognition may fail silently or not work at all');
+            console.warn('  - Recommend using Chrome for speech recognition features');
+            this.speechSupported = false;
+            this.showBrowserSpecificMessage(isChrome, isEdge, isSafari, isFirefox);
+            return;
+        }
+        
+        // Check browser support with more specific detection
+        const hasWebkitSpeechRecognition = 'webkitSpeechRecognition' in window;
+        const hasSpeechRecognition = 'SpeechRecognition' in window;
+        
+        console.log('🎤 API availability:');
+        console.log('  - webkitSpeechRecognition:', hasWebkitSpeechRecognition);
+        console.log('  - SpeechRecognition:', hasSpeechRecognition);
+        
+        // Browser-specific warnings
+        if (isSafari) {
+            console.warn('🎤 Safari: Speech recognition has limited support');
+            console.warn('  - May not work in private browsing mode');
+            console.warn('  - Requires user gesture to activate');
+            console.warn('  - May have permission issues');
+        }
+        
+        if (isEdge) {
+            console.warn('🎤 Edge: Speech recognition support varies by version');
+            console.warn('  - Older Edge versions may not support Web Speech API');
+            console.warn('  - Try Chrome for better compatibility');
+        }
+        
+        if (isFirefox) {
+            console.warn('🎤 Firefox: Limited speech recognition support');
+            console.warn('  - Web Speech API not fully supported in Firefox');
+        }
+        
+        // Protocol check
+        if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+            console.error('🎤 HTTPS required: Speech recognition requires HTTPS in production');
+            this.speechSupported = false;
+            return;
+        }
         
         if (hasWebkitSpeechRecognition || hasSpeechRecognition) {
             try {
@@ -39,17 +94,18 @@ export class SpeechRecognitionManager {
                 this.speechSupported = true;
                 console.log('🎤 Speech recognition initialized successfully');
                 
+                // Test if it actually works (Safari sometimes lies about support)
+                this.testSpeechRecognition();
+                
             } catch (error) {
                 console.error('🎤 Failed to create speech recognition:', error);
                 this.speechSupported = false;
+                this.showBrowserSpecificMessage(isChrome, isEdge, isSafari, isFirefox);
             }
         } else {
             console.warn('🎤 Speech recognition not supported');
-            console.warn('  - Possible reasons:');
-            console.warn('    1. Browser does not support Web Speech API');
-            console.warn('    2. Not running on HTTPS (required for most browsers)');
-            console.warn('    3. Browser privacy settings blocking speech recognition');
             this.speechSupported = false;
+            this.showBrowserSpecificMessage(isChrome, isEdge, isSafari, isFirefox);
         }
         
         // Log final state
@@ -216,6 +272,40 @@ export class SpeechRecognitionManager {
             console.warn('🎤 Could not check microphone permission:', error);
         }
         return 'unknown';
+    }
+
+    testSpeechRecognition() {
+        // Test if speech recognition actually works (Safari sometimes reports support but fails)
+        if (!this.speechRecognition) return;
+        
+        try {
+            // Try to access properties to see if it really works
+            const testLang = this.speechRecognition.lang;
+            const testContinuous = this.speechRecognition.continuous;
+            console.log('🎤 Speech recognition test passed');
+        } catch (error) {
+            console.warn('🎤 Speech recognition test failed:', error);
+            this.speechSupported = false;
+        }
+    }
+
+    showBrowserSpecificMessage(isChrome, isEdge, isSafari, isFirefox) {
+        console.warn('🎤 Browser-specific guidance:');
+        
+        if (isSafari) {
+            console.warn('  Safari: Try using Chrome for better speech recognition support');
+            console.warn('  - Speech recognition may not work in private browsing');
+            console.warn('  - Make sure microphone permissions are allowed');
+        } else if (isEdge) {
+            console.warn('  Edge: Try using Chrome for better speech recognition support');
+            console.warn('  - Older Edge versions have limited Web Speech API support');
+        } else if (isFirefox) {
+            console.warn('  Firefox: Speech recognition not supported');
+            console.warn('  - Firefox doesn\'t support Web Speech API');
+            console.warn('  - Try using Chrome instead');
+        } else {
+            console.warn('  Unknown browser: Try using Chrome for best compatibility');
+        }
     }
 
     // Utility methods for speech analysis

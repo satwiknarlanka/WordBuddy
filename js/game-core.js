@@ -81,6 +81,22 @@ export class GameCore {
             this.uiManager.showMessage('No speech detected. Try the microphone button again!', 'info');
             this.uiManager.updateListenButton('ready');
         };
+        
+        // Show browser compatibility warning if needed
+        if (!this.speechManager.speechSupported) {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const browserInfo = {
+                isChrome: userAgent.includes('chrome') && !userAgent.includes('edg'),
+                isEdge: userAgent.includes('edg'),
+                isSafari: userAgent.includes('safari') && !userAgent.includes('chrome'),
+                isFirefox: userAgent.includes('firefox')
+            };
+            
+            // Show warning after a delay so it doesn't interfere with loading
+            setTimeout(() => {
+                this.uiManager.showBrowserCompatibilityWarning(browserInfo);
+            }, 2000);
+        }
     }
 
     setupEventListeners() {
@@ -315,7 +331,22 @@ export class GameCore {
     startSpeechRecognition() {
         if (!this.speechManager.isAvailable()) {
             console.warn('🎤 Speech recognition not available');
-            this.uiManager.showMessage('Speech recognition not available. Use the "👍 I Said It!" button instead.', 'info');
+            
+            // Show browser-specific message
+            const userAgent = navigator.userAgent.toLowerCase();
+            let message = 'Speech recognition not available. ';
+            
+            if (userAgent.includes('edg')) {
+                message += 'Edge has known issues with speech recognition. Please try Chrome for the best experience, or use "👍 I Said It!" button.';
+            } else if (userAgent.includes('safari') && !userAgent.includes('chrome')) {
+                message += 'Safari has limited support. Try Chrome for better experience, or use "👍 I Said It!" button.';
+            } else if (userAgent.includes('firefox')) {
+                message += 'Firefox doesn\'t support speech recognition. Try Chrome, or use "👍 I Said It!" button.';
+            } else {
+                message += 'Use the "👍 I Said It!" button instead.';
+            }
+            
+            this.uiManager.showMessage(message, 'info', 5000);
             return;
         }
         
@@ -449,7 +480,91 @@ export class GameCore {
     updateAllUI() {
         this.updateProgressIndicators();
         this.updateSpeechUI();
-        this.uiManager.updateSettingsUI(this.settings);
+        this.updateBrowserCompatibilityUI();
+    }
+
+    updateBrowserCompatibilityUI() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg');
+        const isEdgeChromium = userAgent.includes('edg/');
+        const isEdgeLegacy = userAgent.includes('edge/');
+        const isEdge = isEdgeChromium || isEdgeLegacy;
+        const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
+        const isFirefox = userAgent.includes('firefox');
+        
+        // Show browser compatibility banner for non-Chrome browsers
+        if (!this.speechManager.isAvailable() && !isChrome) {
+            this.showBrowserCompatibilityBanner(isEdge, isSafari, isFirefox);
+        }
+        
+        // Update listen button with browser-specific text
+        const listenBtn = document.getElementById('play-audio-btn');
+        if (listenBtn && !this.speechManager.isAvailable()) {
+            if (isEdge) {
+                listenBtn.innerHTML = '<span>🎤 Not Available (Edge)</span>';
+                listenBtn.title = 'Edge has known issues with speech recognition. Try Chrome for better experience.';
+            } else if (isSafari) {
+                listenBtn.innerHTML = '<span>🎤 Limited Support (Safari)</span>';
+                listenBtn.title = 'Speech recognition has limited support in Safari. Try Chrome for better experience.';
+            } else if (isFirefox) {
+                listenBtn.innerHTML = '<span>🎤 Not Available (Firefox)</span>';
+                listenBtn.title = 'Firefox doesn\'t support speech recognition. Try Chrome for better experience.';
+            } else {
+                listenBtn.innerHTML = '<span>🎤 Not Available</span>';
+                listenBtn.title = 'Speech recognition not supported in this browser.';
+            }
+            listenBtn.disabled = true;
+            listenBtn.style.opacity = '0.6';
+        }
+    }
+
+    showBrowserCompatibilityBanner(isEdge, isSafari, isFirefox) {
+        // Create a banner to inform users about browser compatibility
+        const banner = document.createElement('div');
+        banner.id = 'browser-compatibility-banner';
+        banner.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(45deg, #FF9800, #FF5722);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            z-index: 10000;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        `;
+        
+        let message = '';
+        if (isEdge) {
+            message = '🎤 Edge has known issues with speech recognition. For the full experience with voice input, please try Chrome! You can still play using "👍 I Said It!" button.';
+        } else if (isSafari) {
+            message = '🎤 Limited speech support in Safari. For the best experience, try Chrome! You can still play using "👍 I Said It!" button.';
+        } else if (isFirefox) {
+            message = '🎤 Firefox doesn\'t support speech recognition. For the best experience, try Chrome! You can still play using "👍 I Said It!" button.';
+        } else {
+            message = '🎤 Speech recognition not available. You can still play using "👍 I Said It!" button.';
+        }
+        
+        banner.innerHTML = `
+            <div style="max-width: 800px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+                <span>${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 10px;">×</button>
+            </div>
+        `;
+        
+        // Only show if not already shown
+        if (!document.getElementById('browser-compatibility-banner')) {
+            document.body.insertBefore(banner, document.body.firstChild);
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                if (banner.parentNode) {
+                    banner.remove();
+                }
+            }, 10000);
+        }
     }
 
     async requestMicrophonePermission() {
