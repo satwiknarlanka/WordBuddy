@@ -1,0 +1,418 @@
+/* WordBuddy UI Components */
+
+/* Button Variants */
+.btn-primary {
+    background: linear-gradient(45deg, #4ECDC4, #44A08D);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #9C27B0, #E91E63);
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #FF9800, #F57C00);
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+}
+
+.btn-back {
+    background: linear-gradient(45deg, #9E9E9E, #757575);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    min-height: 40px;
+}
+
+/* Category Buttons */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+.category-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 20px 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    position: relative;
+}
+
+.category-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.category-btn .emoji {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+/* Progress Indicators */
+.progress-container {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.game-progress {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.game-progress-bar {
+    height: 100%;
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+/* Word Display */
+.word-display {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    padding: 30px 20px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    max-width: 350px;
+    width: 100%;
+}
+
+.word-image-container {
+    width: 200px;
+    height: 150px;
+    margin: 0 auto 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.word-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.emoji-fallback {
+    font-size: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: white;
+    border-radius: 15px;
+}
+
+.word-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-shadow: none;
+}
+
+.phonetic-hint {
+    font-size: 1.2rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+/* Settings Components */
+.settings-group {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 350px;
+}
+
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.settings-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.volume-slider {
+    width: 120px;
+    height: 6px;
+    border-radius: 3px;
+    background: #ddd;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4ECDC4;
+    cursor: pointer;
+}
+
+.toggle-btn {
+    background: #ddd;
+    color: #666;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+}
+
+.toggle-btn.active {
+    background: #4CAF50;
+    color: white;
+}
+
+/* Microphone Permission */
+.mic-permission {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px 0;
+    text-align: center;
+    width: 100%;
+    max-width: 350px;
+}
+
+.mic-permission-btn {
+    background: linear-gradient(45deg, #FF9800, #F57C00);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 15px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.mic-permission-btn.granted {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+}
+
+.mic-permission-btn.denied {
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+}
+
+/* Game Controls */
+.game-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px 0;
+}
+
+.control-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.control-row .btn {
+    flex: 1;
+    margin: 0;
+}
+
+/* Score Display */
+.score-display {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin: 10px 0;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Success Screen */
+.success-content {
+    text-align: center;
+    color: white;
+}
+
+.stars-display {
+    font-size: 3rem;
+    margin: 20px 0;
+    animation: starGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes starGlow {
+    from { text-shadow: 0 0 10px rgba(255, 255, 0, 0.5); }
+    to { text-shadow: 0 0 20px rgba(255, 255, 0, 0.8); }
+}
+
+/* Messages and Feedback */
+.game-message {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    z-index: 1000;
+    animation: messageSlideIn 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+}
+
+/* Animations */
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -70%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes celebrationPop {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes encouragementFade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+}
+
+@keyframes pronounceWord {
+    0%, 100% {
+        color: #333;
+        transform: scale(1);
+    }
+    50% {
+        color: #4ECDC4;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes highlightPhonetic {
+    0%, 100% {
+        color: #666;
+        transform: scale(1);
+    }
+    50% {
+        color: #FF9800;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes slideOutUp {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-100%);
+    }
+}
