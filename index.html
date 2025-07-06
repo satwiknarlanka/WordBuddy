@@ -8,38 +8,15 @@
     <meta name="apple-mobile-web-app-title" content="WordBuddy">
     <meta name="theme-color" content="#FF6B6B">
     
-    <!-- SEO and Social Media Meta Tags -->
-    <meta name="description" content="WordBuddy - A fun pronunciation learning game for 4-year-olds with British English speech recognition">
-    <meta name="keywords" content="pronunciation, learning, game, children, speech, British English, 4-year-old">
-    <meta name="author" content="WordBuddy Team">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="WordBuddy - Pronunciation Learning Game">
-    <meta property="og:description" content="Help your 4-year-old learn pronunciation with this fun interactive game">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://satwik.github.io/WordBuddy/">
-    <meta property="og:image" content="https://satwik.github.io/WordBuddy/assets/images/app-icon.png">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="WordBuddy - Pronunciation Learning Game">
-    <meta name="twitter:description" content="Help your 4-year-old learn pronunciation with this fun interactive game">
-    <meta name="twitter:image" content="https://satwik.github.io/WordBuddy/assets/images/app-icon.png">
-    
-    <title>WordBuddy - Pronunciation Game for Kids</title>
+    <title>WordBuddy - Pronunciation Game</title>
     
     <!-- Preload critical resources -->
     <link rel="preload" href="style.css" as="style">
     <link rel="preload" href="script.js" as="script">
     
     <!-- Favicon and app icons -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/app-icon-180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/app-icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="assets/images/app-icon-512.png">
-    
-    <!-- Manifest for PWA -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
@@ -132,32 +109,34 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="game-progress"></div>
                 </div>
-                <div class="score-display" id="score-display">0/5</div>
+                <div class="score" id="current-score">⭐ 0/5</div>
             </div>
             
             <div class="word-display">
                 <div class="word-image-container">
-                    <img id="word-image" src="" alt="Word Image" loading="lazy">
-                    <div class="emoji-fallback" id="emoji-fallback">🐱</div>
+                    <img id="word-image" src="" alt="" class="word-image">
                 </div>
-                <div class="word-text" id="word-text">Cat</div>
-                <div class="word-phonetic" id="word-phonetic">/kæt/</div>
+                <h1 id="word-text" class="word-text">cat</h1>
+                <div class="phonetic-hint" id="phonetic-hint">/kæt/</div>
             </div>
             
             <div class="game-controls">
-                <button id="repeat-btn" class="game-btn secondary">
-                    <span>🔊 Say Again</span>
-                </button>
-                <button id="play-audio-btn" class="game-btn primary">
+                <button id="play-audio-btn" class="big-button secondary">
                     <span>🎤 Listen to Me</span>
                 </button>
-                <button id="record-btn" class="game-btn secondary">
-                    <span>🔄 Practice Word</span>
+                <button id="repeat-btn" class="big-button accent">
+                    <span>� Hear Word</span>
                 </button>
-                <button id="next-word-btn" class="game-btn success" disabled>
+                <button id="next-word-btn" class="big-button primary" disabled>
                     <span>➡️ Next Word</span>
                 </button>
-                <button id="good-job-btn" class="game-btn alternative">
+            </div>
+            
+            <div class="speech-controls" id="speech-controls">
+                <button id="record-btn" class="big-button record">
+                    <span>🔄 Practice Word</span>
+                </button>
+                <button id="good-job-btn" class="big-button success">
                     <span>👍 I Said It!</span>
                 </button>
             </div>
@@ -238,21 +217,6 @@
 
     <!-- Audio Elements -->
     <audio id="word-audio" preload="none"></audio>
-
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('sw.js')
-                    .then(function(registration) {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(function(registrationError) {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
-    </script>
 
     <!-- Game Script -->
     <script src="script.js"></script>

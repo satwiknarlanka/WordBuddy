@@ -622,27 +622,38 @@ class WordBuddyGame {
         document.getElementById('word-text').textContent = word.word;
         document.getElementById('phonetic-hint').textContent = word.phonetic;
         
-        // Load image with fallback
-        const img = document.getElementById('word-image');
-        const imgContainer = img.parentElement;
+        // Get the image container directly (more reliable)
+        const imgContainer = document.querySelector('.word-image-container');
         
-        // Reset container to original state
-        imgContainer.innerHTML = '<img id="word-image" src="" alt="" class="word-image">';
-        const newImg = document.getElementById('word-image');
+        // Clear container completely and reset
+        imgContainer.innerHTML = '';
         
+        // Create new image element
+        const newImg = document.createElement('img');
+        newImg.id = 'word-image';
+        newImg.className = 'word-image';
         newImg.src = word.image;
         newImg.alt = word.word;
+        newImg.style.display = 'none'; // Hide initially
+        
         newImg.onload = () => {
             newImg.style.display = 'block';
+            console.log(`✅ Image loaded for: ${word.word}`);
         };
+        
         newImg.onerror = () => {
-            // Show emoji fallback instead of image
-            newImg.style.display = 'none';
+            console.log(`📷 Image failed for: ${word.word}, showing emoji fallback`);
+            // Remove the failed image and show emoji instead
+            newImg.remove();
             const emojiDiv = document.createElement('div');
+            emojiDiv.className = 'emoji-fallback';
             emojiDiv.style.cssText = 'font-size: 4rem; display: flex; align-items: center; justify-content: center; height: 100%; background: white; border-radius: 20px;';
             emojiDiv.textContent = this.getEmojiForWord(word.word);
             imgContainer.appendChild(emojiDiv);
         };
+        
+        // Add the image to container
+        imgContainer.appendChild(newImg);
         
         // Preload audio with error handling
         const audio = document.getElementById('word-audio');
@@ -1328,9 +1339,3 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
-
-// Initialize the game when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🎯 DOM loaded, starting WordBuddy game...');
-    window.game = new WordBuddyGame();
-});
