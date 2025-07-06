@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="WordBuddy">
+    <meta name="theme-color" content="#FF6B6B">
+    
+    <!-- SEO and Social Media Meta Tags -->
+    <meta name="description" content="WordBuddy - A fun pronunciation learning game for 4-year-olds with British English speech recognition">
+    <meta name="keywords" content="pronunciation, learning, game, children, speech, British English, 4-year-old">
+    <meta name="author" content="WordBuddy Team">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="WordBuddy - Pronunciation Learning Game">
+    <meta property="og:description" content="Help your 4-year-old learn pronunciation with this fun interactive game">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://satwik.github.io/WordBuddy/">
+    <meta property="og:image" content="https://satwik.github.io/WordBuddy/assets/images/app-icon.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WordBuddy - Pronunciation Learning Game">
+    <meta name="twitter:description" content="Help your 4-year-old learn pronunciation with this fun interactive game">
+    <meta name="twitter:image" content="https://satwik.github.io/WordBuddy/assets/images/app-icon.png">
+    
+    <title>WordBuddy - Pronunciation Game for Kids</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    
+    <!-- Favicon and app icons -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/app-icon-180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/app-icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/images/app-icon-512.png">
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h1>WordBuddy</h1>
+            <p>Loading your pronunciation adventure...</p>
+        </div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen">
+        <div class="screen-content">
+            <div class="welcome-header">
+                <h1>🎯 WordBuddy</h1>
+                <p>Learn to say words!</p>
+            </div>
+            <div class="welcome-character">
+                <div class="buddy-character">👶</div>
+            </div>
+            <button id="start-btn" class="big-button primary">
+                <span>🚀 Start Playing!</span>
+            </button>
+            <div class="settings-icon" id="settings-btn">⚙️</div>
+        </div>
+    </div>
+
+    <!-- Category Selection Screen -->
+    <div id="category-screen" class="screen">
+        <div class="screen-content">
+            <div class="screen-header">
+                <button class="back-btn" id="category-back-btn">← Back</button>
+                <h2>Choose a Category</h2>
+                <button class="mic-permission-btn" id="mic-permission-btn">
+                    <span class="mic-icon">🎤</span>
+                    <span class="mic-text">Allow Microphone</span>
+                </button>
+            </div>
+            <div class="categories-container">
+                <div class="categories-grid">
+                    <button class="category-btn" data-category="animals">
+                        <div class="category-icon">🐱</div>
+                        <span>Animals</span>
+                        <div class="progress-indicator" id="animals-progress"></div>
+                    </button>
+                    <button class="category-btn" data-category="alphabets">
+                        <div class="category-icon">🔤</div>
+                        <span>Alphabets</span>
+                        <div class="progress-indicator" id="alphabets-progress"></div>
+                    </button>
+                    <button class="category-btn" data-category="days">
+                        <div class="category-icon">📅</div>
+                        <span>Days</span>
+                        <div class="progress-indicator" id="days-progress"></div>
+                    </button>
+                    <button class="category-btn" data-category="months">
+                        <div class="category-icon">🗓️</div>
+                        <span>Months</span>
+                        <div class="progress-indicator" id="months-progress"></div>
+                    </button>
+                    <button class="category-btn" data-category="colors">
+                        <div class="category-icon">🌈</div>
+                        <span>Colors</span>
+                        <div class="progress-indicator" id="colors-progress"></div>
+                    </button>
+                    <button class="category-btn" data-category="numbers">
+                        <div class="category-icon">🔢</div>
+                        <span>Numbers</span>
+                        <div class="progress-indicator" id="numbers-progress"></div>
+                    </button>
+                    <button class="category-btn" data-category="shapes">
+                        <div class="category-icon">⭐</div>
+                        <span>Shapes</span>
+                        <div class="progress-indicator" id="shapes-progress"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="screen-content">
+            <div class="game-header">
+                <button class="back-btn" id="game-back-btn">← Categories</button>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="game-progress"></div>
+                </div>
+                <div class="score-display" id="score-display">0/5</div>
+            </div>
+            
+            <div class="word-display">
+                <div class="word-image-container">
+                    <img id="word-image" src="" alt="Word Image" loading="lazy">
+                    <div class="emoji-fallback" id="emoji-fallback">🐱</div>
+                </div>
+                <div class="word-text" id="word-text">Cat</div>
+                <div class="word-phonetic" id="word-phonetic">/kæt/</div>
+            </div>
+            
+            <div class="game-controls">
+                <button id="repeat-btn" class="game-btn secondary">
+                    <span>🔊 Say Again</span>
+                </button>
+                <button id="play-audio-btn" class="game-btn primary">
+                    <span>🎤 Listen to Me</span>
+                </button>
+                <button id="record-btn" class="game-btn secondary">
+                    <span>🔄 Practice Word</span>
+                </button>
+                <button id="next-word-btn" class="game-btn success" disabled>
+                    <span>➡️ Next Word</span>
+                </button>
+                <button id="good-job-btn" class="game-btn alternative">
+                    <span>👍 I Said It!</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="success-screen" class="screen">
+        <div class="screen-content">
+            <div class="success-animation">
+                <div class="confetti"></div>
+                <div class="celebration-character">🎉</div>
+                <h1>Amazing Job!</h1>
+                <p id="success-message">You completed 5 words!</p>
+                <div class="stars-earned" id="stars-earned">
+                    ⭐⭐⭐⭐⭐
+                </div>
+            </div>
+            <div class="success-controls">
+                <button id="play-again-btn" class="big-button primary">
+                    <span>🔄 Play Again</span>
+                </button>
+                <button id="choose-category-btn" class="big-button secondary">
+                    <span>📚 Choose Category</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings-screen" class="screen">
+        <div class="screen-content">
+            <div class="screen-header">
+                <button class="back-btn" id="settings-back-btn">← Back</button>
+                <h2>Settings</h2>
+            </div>
+            <div class="settings-options">
+                <div class="setting-item">
+                    <label>🔊 Sound Volume</label>
+                    <input type="range" id="volume-slider" min="0" max="100" value="80" class="volume-slider">
+                </div>
+                <div class="setting-item">
+                    <label>🎤 Speech Recognition</label>
+                    <button id="speech-toggle" class="toggle-btn active">ON</button>
+                </div>
+                <div class="setting-item">
+                    <button id="reset-progress-btn" class="big-button danger">
+                        <span>🔄 Reset All Progress</span>
+                    </button>
+                </div>
+                
+                <!-- Troubleshooting Section -->
+                <div class="troubleshooting-section">
+                    <h3>🛠️ Microphone Troubleshooting</h3>
+                    <div class="troubleshooting-tips">
+                        <div class="tip-item">
+                            <strong>📱 On Mobile:</strong>
+                            <ul>
+                                <li>Make sure microphone permission is granted in browser settings</li>
+                                <li>Close other apps that might be using the microphone</li>
+                                <li>Try refreshing the page if microphone stops working</li>
+                                <li>Use "👍 I Said It!" button if microphone keeps failing</li>
+                            </ul>
+                        </div>
+                        <div class="tip-item">
+                            <strong>🌐 Browser Tips:</strong>
+                            <ul>
+                                <li>Chrome/Safari work best for speech recognition</li>
+                                <li>Make sure your internet connection is stable</li>
+                                <li>Speak clearly and close to your device</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="word-audio" preload="none"></audio>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js')
+                    .then(function(registration) {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+
+    <!-- Game Script -->
+    <script src="script.js"></script>
+</body>
+</html>

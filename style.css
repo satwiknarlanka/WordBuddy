@@ -1,0 +1,790 @@
+/* Mobile-First CSS for iPhone 8 (375x667px) - WordBuddy Pronunciation Game */
+
+/* CSS Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Safe area support for iPhone */
+body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+/* Screen Management */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.screen-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
+    justify-content: flex-start; /* Change from center to flex-start for scrolling */
+    min-height: 100vh; /* Ensure content can be taller than screen */
+    box-sizing: border-box;
+}
+
+/* Typography for 4-year-olds */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+p {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Button Styles - Large Touch Targets */
+.big-button {
+    width: 100%;
+    min-height: 60px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 15px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.big-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.big-button:disabled {
+    opacity: 0.5;
+    transform: none !important;
+    cursor: not-allowed;
+}
+
+/* Button Color Schemes */
+.big-button.primary {
+    background: linear-gradient(45deg, #FF6B6B, #FF8E88);
+    color: white;
+}
+
+.big-button.secondary {
+    background: linear-gradient(45deg, #4ECDC4, #44A08D);
+    color: white;
+}
+
+.big-button.accent {
+    background: linear-gradient(45deg, #FFE66D, #FF8A80);
+    color: #333;
+}
+
+.big-button.success {
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    color: white;
+}
+
+.big-button.record {
+    background: linear-gradient(45deg, #9C27B0, #E91E63);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.big-button.danger {
+    background: linear-gradient(45deg, #F44336, #FF5722);
+    color: white;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    50% { box-shadow: 0 4px 25px rgba(156, 39, 176, 0.4); }
+    100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+}
+
+/* Loading Screen */
+#loading-screen {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    z-index: 1000;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 30px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Welcome Screen */
+.welcome-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.buddy-character {
+    font-size: 5rem;
+    text-align: center;
+    margin: 40px 0;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.settings-icon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.settings-icon:active {
+    transform: scale(0.9);
+    background: rgba(255,255,255,0.3);
+}
+
+/* Category Selection */
+.screen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.screen-header h2 {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.back-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 44px;
+    transition: all 0.2s ease;
+}
+
+.back-btn:active {
+    transform: scale(0.95);
+    background: rgba(255,255,255,0.3);
+}
+
+/* Microphone Permission Button */
+.mic-permission-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 44px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid transparent;
+}
+
+.mic-permission-btn:active {
+    transform: scale(0.95);
+    background: rgba(255,255,255,0.3);
+}
+
+.mic-permission-btn.granted {
+    background: rgba(76, 175, 80, 0.3);
+    border-color: rgba(76, 175, 80, 0.5);
+}
+
+.mic-permission-btn.denied {
+    background: rgba(244, 67, 54, 0.3);
+    border-color: rgba(244, 67, 54, 0.5);
+}
+
+.mic-icon {
+    font-size: 1.2rem;
+}
+
+.mic-text {
+    font-weight: 600;
+}
+
+/* Scrollable Categories Container */
+.categories-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: calc(100vh - 220px);
+    padding-right: 5px;
+}
+
+.categories-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.categories-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.categories-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.categories-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding-bottom: 20px;
+}
+
+/* Special layout for 7 categories - last one spans full width */
+.categories-grid .category-btn:nth-child(7) {
+    grid-column: 1 / -1;
+    max-width: 160px;
+    margin: 0 auto;
+}
+
+.category-btn {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.category-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.category-icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.category-btn span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.progress-indicator {
+    width: 100%;
+    height: 4px;
+    background: #E0E0E0;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-indicator::after {
+    content: '';
+    display: block;
+    height: 100%;
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    width: var(--progress, 0%);
+    transition: width 0.3s ease;
+}
+
+/* Game Screen */
+.game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.score {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    min-width: 60px;
+    text-align: right;
+}
+
+.word-display {
+    text-align: center;
+    margin: 30px 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.word-image-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.word-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.word-text {
+    font-size: 3rem;
+    color: white;
+    margin: 20px 0 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.phonetic-hint {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.8);
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.game-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.speech-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Success Screen */
+.success-animation {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.confetti {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    animation: confetti 1s ease infinite;
+}
+
+@keyframes confetti {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(5deg) scale(1.1); }
+    75% { transform: rotate(-5deg) scale(1.1); }
+}
+
+.celebration-character {
+    font-size: 4rem;
+    margin: 20px 0;
+    animation: celebrate 1.5s ease-in-out infinite;
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(10deg); }
+}
+
+.stars-earned {
+    font-size: 2rem;
+    margin: 20px 0;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.success-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Settings Screen */
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.setting-item {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.setting-item label {
+    display: block;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.volume-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.3);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+
+.toggle-btn {
+    background: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 44px;
+    min-width: 80px;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn:not(.active) {
+    background: #757575;
+}
+
+.toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Troubleshooting Section */
+.troubleshooting-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.troubleshooting-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.troubleshooting-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tip-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #4ECDC4;
+}
+
+.tip-item strong {
+    color: #4ECDC4;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.tip-item ul {
+    margin: 0;
+    padding-left: 20px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tip-item li {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Mobile adjustments for troubleshooting */
+@media (max-width: 320px) {
+    .troubleshooting-section {
+        padding: 15px;
+        margin-top: 20px;
+    }
+    
+    .tip-item {
+        padding: 12px;
+    }
+    
+    .tip-item strong {
+        font-size: 0.9rem;
+    }
+    
+    .tip-item li {
+        font-size: 0.8rem;
+    }
+}
+
+/* Audio fallback animations */
+@keyframes pronounceWord {
+    0%, 100% { transform: scale(1); color: white; }
+    25% { transform: scale(1.1); color: #FFE66D; }
+    50% { transform: scale(1.05); color: #FF8A80; }
+    75% { transform: scale(1.1); color: #4ECDC4; }
+}
+
+@keyframes highlightPhonetic {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); background: rgba(255, 255, 255, 0.2); border-radius: 10px; padding: 5px; }
+}
+
+/* Message animations */
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(0);
+    }
+}
+
+/* Microphone feedback animations */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes slideOutUp {
+    from {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+}
+
+.mic-feedback {
+    animation: slideInDown 0.3s ease-out;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 320px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    .word-text { font-size: 2.5rem; }
+    .word-image-container {
+        width: 150px;
+        height: 150px;
+    }
+    .categories-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    /* Microphone button adjustments for small screens */
+    .mic-permission-btn {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+    
+    .mic-text {
+        display: none; /* Hide text on very small screens, keep only icon */
+    }
+    
+    /* Categories container height adjustment */
+    .categories-container {
+        max-height: calc(100vh - 240px);
+    }
+}
+
+/* Landscape orientation (not recommended but supported) */
+@media (orientation: landscape) and (max-height: 500px) {
+    .screen-content {
+        padding: 10px;
+    }
+    .word-display {
+        margin: 15px 0;
+    }
+    .word-image-container {
+        width: 120px;
+        height: 120px;
+    }
+    .word-text {
+        font-size: 2rem;
+    }
+    .buddy-character {
+        font-size: 3rem;
+        margin: 20px 0;
+    }
+    
+    /* Landscape adjustments for categories */
+    .categories-container {
+        max-height: calc(100vh - 180px);
+    }
+    
+    .screen-header {
+        margin-bottom: 15px;
+    }
+}
+
+/* Animation for screen transitions */
+.screen.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+.screen.slide-out {
+    animation: slideOut 0.3s ease-in;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
