@@ -1,154 +1,397 @@
 # WordBuddy - Pronunciation Learning Game 🎯
 
-A mobile-friendly pronunciation learning game designed for 4-year-olds, featuring British English speech recognition and scrollable categories.
+A mobile-friendly, offline-capable pronunciation learning game designed for 4-year-olds. Features British English pronunciation, speech recognition, and multiple learning categories.
 
-## 🚀 Live Demo
-Visit: [Your GitHub Pages URL will be here]
+## 🎮 Game Features
 
-## 📱 Features
-- **7 Learning Categories**: Animals, Alphabets, Days, Months, Colors, Numbers, Shapes
-- **British English Speech Recognition**: Kids practice pronunciation with real feedback
-- **Mobile Optimized**: iPhone 8 optimized, works on all devices
-- **Offline Capable**: Service worker for offline play
-- **Progress Tracking**: Saves progress locally
-- **Microphone Permission Management**: Easy setup for speech recognition
-- **Scrollable Interface**: Access all categories easily
-- **Child-Friendly UI**: Large buttons, bright colors, encouraging feedback
+- **7 Learning Categories**: Animals, Colors, Numbers, Shapes, Alphabets, Days, Months
+- **British English Pronunciation** with speech synthesis
+- **Speech Recognition** for interactive learning
+- **Mobile-Optimized** design (perfect for iPhone 8+)
+- **Offline Support** via service worker
+- **Progress Tracking** with localStorage
+- **Emoji Fallbacks** for missing images
+- **PWA-Ready** with app icons and manifest
 
-## 🎮 How to Play
-1. **Start Playing** - Click the rocket button
-2. **Allow Microphone** - Click the microphone button to enable speech recognition
-3. **Choose Category** - Scroll through and select a category
-4. **Listen & Repeat** - Hear the word, then say it back
-5. **Get Feedback** - Visual and audio feedback for correct pronunciation
-6. **Progress Tracking** - Complete words to unlock new content
+## 🚀 Quick Start
 
-## 🛠️ Technical Features
-- **Speech Recognition**: Web Speech API with British English (en-GB)
-- **Audio Synthesis**: British English female voice preferred
-- **PWA Support**: Add to home screen like a native app
-- **Responsive Design**: Works on phones, tablets, and desktops
-- **Error Handling**: Robust speech recognition with fallbacks
-- **Local Storage**: Progress and settings persistence
+### Development
 
-## 📁 Build Contents
-This build folder contains all files ready for GitHub Pages deployment:
+To run the game locally for development:
 
-```
-build/
-├── index.html              # Main game file
-├── style.css               # All styles and responsive design
-├── script.js               # Game logic and speech recognition
-├── sw.js                   # Service worker for offline support
-├── manifest.json           # PWA manifest for app-like experience
-└── assets/
-    ├── images/             # Game images and icons
-    │   └── README.md       # Image requirements and structure
-    └── audio/              # Pronunciation audio files
-        └── README.md       # Audio requirements and structure
-```
-
-## 🚀 Deployment Instructions
-
-### Quick Deploy to GitHub Pages
-1. **Create Repository**: Create a new public repository on GitHub
-2. **Upload Build**: Upload all files from this `build/` folder to your repository
-3. **Enable Pages**: Go to Settings → Pages → Deploy from branch (main)
-4. **Access Game**: Your game will be live at `https://username.github.io/repository-name/`
-
-### Manual Upload Steps
-1. Go to your GitHub repository
-2. Click "Add file" → "Upload files"
-3. Drag all files from the `build/` folder
-4. Commit with message: "Deploy WordBuddy pronunciation game"
-5. Wait 1-2 minutes for deployment
-
-### Using Git Commands
 ```bash
-# Clone or create your repository
-git clone https://github.com/username/repository-name.git
-cd repository-name
-
-# Copy build files
-cp -r /path/to/WordBuddy/build/* .
-
-# Commit and push
-git add .
-git commit -m "Deploy WordBuddy pronunciation game"
-git push origin main
+./dev-server.sh
 ```
 
-## 📱 Mobile Setup Instructions
-After deployment, users can add the game to their phone's home screen:
+Or with a custom port:
 
-### iPhone/iPad:
-1. Open Safari and go to your game URL
-2. Tap the Share button (square with arrow)
-3. Select "Add to Home Screen"
-4. The game now works like a native app!
+```bash
+./dev-server.sh 3000
+```
 
-### Android:
-1. Open Chrome and go to your game URL
-2. Tap the three dots menu
-3. Select "Add to Home screen"
-4. Confirm installation
+Then open http://localhost:8000 (or your custom port) in your browser.
 
-## 🔊 Adding Your Own Content
+### Publishing to GitHub Pages
 
-### Images
-- Add images to `assets/images/[category]/`
-- Use JPG or PNG format, 300x300px recommended
-- Name files to match the words (e.g., `cat.jpg` for "cat")
+To build and deploy the game to GitHub Pages:
 
-### Audio
-- Add MP3 files to `assets/audio/[category]/`
-- Use clear British English pronunciation
-- Keep files under 1MB each
-- Name files to match the words (e.g., `cat.mp3` for "cat")
+```bash
+./publish.sh
+```
 
-### Words
-- Edit `script.js` to add new words
-- Follow the existing data structure
-- Include word, phonetic notation, image path, and audio path
+Or with a custom commit message:
 
-## 🐛 Troubleshooting
+```bash
+./publish.sh "Add new feature: speech recognition improvements"
+```
 
-### Speech Recognition Issues
-- Ensure microphone permission is granted
-- Use Chrome or Safari for best compatibility
-- Check internet connection (required for speech recognition)
-- Use "I Said It!" button as fallback
+## 📁 Project Structure
 
-### Mobile Issues
-- Refresh the page if microphone stops working
-- Close other apps using the microphone
-- Try different browsers (Chrome/Safari recommended)
+```
+WordBuddy/
+├── index.html              # Main game HTML
+├── style.css               # Game styles
+├── script.js               # Game logic and functionality
+├── sw.js                   # Service worker for offline support
+├── manifest.json           # PWA manifest
+├── assets/                 # Game assets
+│   ├── images/            # Image assets (with fallbacks)
+│   └── audio/             # Audio assets (with fallbacks)
+├── build/                 # Production build files
+├── repo/WordBuddy/        # Git repository for GitHub Pages
+├── publish.sh             # Publish script
+├── dev-server.sh          # Development server script
+└── README.md              # This file
+```
 
-### Deployment Issues
-- Ensure all files are in repository root (not in a subfolder)
-- Wait up to 10 minutes for first deployment
-- Check GitHub Pages settings in repository
+## 🛠️ Development Workflow
 
-## 🎯 Game Design Philosophy
-- **Child-Centered**: Designed specifically for 4-year-olds
-- **Encouraging**: Positive feedback and celebration of attempts
-- **Accessible**: Works without audio files (emoji fallbacks)
-- **Progressive**: Difficulty appropriate for early learners
-- **Inclusive**: Alternative interaction methods for all abilities
+### 1. Make Changes
+Edit the source files in the root directory:
+- `index.html` - HTML structure
+- `style.css` - Styling and responsive design
+- `script.js` - Game logic and functionality
+- `sw.js` - Service worker for offline support
 
-## 🌟 Future Enhancements
-- More categories (food, vehicles, etc.)
-- Difficulty levels
-- Multiplayer family mode
-- Achievement system
-- Parent dashboard
-- Custom word lists
+### 2. Test Locally
+```bash
+./dev-server.sh
+```
+
+### 3. Publish
+```bash
+./publish.sh
+```
+
+This will:
+- Copy files to the `build/` directory
+- Sync with the `repo/WordBuddy/` git repository
+- Commit changes with a timestamp
+- Push to GitHub
+- Display the GitHub Pages URL
+
+## 🎯 Game Categories
+
+### Animals
+Cat, Dog, Bird, Fish, Cow, Duck, Pig, Sheep, Elephant, Lion, Tiger, Bear, Monkey, Rabbit, Horse, Zebra, Giraffe, Penguin, Frog, Turtle
+
+### Alphabets
+All letters A-Z with British pronunciation
+
+### Days of the Week
+Monday through Sunday
+
+### Months
+January through December
+
+### Colors
+Red, Blue, Green, Yellow, Pink, Orange, Purple, Black
+
+### Numbers
+One through Eight
+
+### Shapes
+Circle, Square, Triangle, Star, Heart, Diamond, Oval, Rectangle
+
+## 🎤 Speech Recognition
+
+The game includes speech recognition features:
+- **British English** speech recognition
+- **Fallback support** for different language codes
+- **Lenient matching** for children's pronunciation
+- **Visual feedback** for speech input
+- **Manual override** with "I Said It!" button
+
+## 📱 Mobile Features
+
+- **Touch-optimized** interface
+- **Responsive design** for various screen sizes
+- **Microphone permission** handling
+- **Offline capability** via service worker
+- **PWA support** for home screen installation
+
+## 🔧 Technical Details
+
+### Browser Compatibility
+- Modern browsers with ES6+ support
+- Speech Recognition: Chrome, Edge, Safari (limited)
+- Speech Synthesis: All modern browsers
+- Service Workers: All modern browsers
+
+### Performance
+- Lazy loading for images
+- Efficient emoji fallbacks
+- Minimal JavaScript bundle
+- Cached assets for offline use
+
+### Accessibility
+- Clear visual feedback
+- Large touch targets
+- Phonetic pronunciation guides
+- Alternative input methods
+
+## 📝 Scripts Reference
+
+### `./publish.sh [commit_message]`
+Builds and deploys the game:
+- Updates `build/` directory with latest files
+- Syncs to `repo/WordBuddy/` git repository
+- Commits changes (with optional custom message)
+- Pushes to GitHub
+- Shows GitHub Pages URL
+
+### `./dev-server.sh [port]`
+Starts local development server:
+- Default port: 8000
+- Binds to localhost only
+- Serves static files
+- Auto-detects Python version
+
+## 🌐 Deployment
+
+The game is automatically deployed to GitHub Pages when you run `./publish.sh`. The URL format is:
+```
+https://[username].github.io/[repository-name]
+```
+
+Make sure your GitHub repository has Pages enabled and set to deploy from the `main` branch.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Make your changes in the source files
+3. Test locally with `./dev-server.sh`
+4. Create a pull request
 
 ## 📄 License
-This project is designed for educational use. Feel free to modify and share!
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🎉 Acknowledgments
+
+- Designed for early childhood education
+- Optimized for mobile devices
+- Built with modern web technologies
+- Focused on accessibility and user experience
+- **Speech Recognition**: Optional speech recognition to practice pronunciation
+- **Offline Support**: Works without internet connection via Service Worker
+- **Progress Tracking**: Saves progress locally and shows completion status
+- **Visual Feedback**: Celebrations, animations, and encouraging messages
+
+## Quick Start 🚀
+
+1. **Start a local server**:
+   ```bash
+   # Using Python 3
+   python -m http.server 8000
+   
+   # Using Python 2
+   python -m SimpleHTTPServer 8000
+   
+   # Using Node.js (if you have http-server installed)
+   npx http-server -p 8000
+   ```
+
+2. **Access from iPhone**:
+   - Find your computer's IP address
+   - On iPhone, go to `http://YOUR_IP_ADDRESS:8000`
+   - Add to home screen for app-like experience
+
+3. **Desktop Testing**:
+   - Open `http://localhost:8000` in your browser
+   - Use browser dev tools to simulate mobile view
+
+## Project Structure 📁
+
+```
+WordBuddy/
+├── index.html              # Main HTML structure
+├── style.css               # Mobile-responsive CSS
+├── script.js               # Game logic and interactions
+├── sw.js                   # Service Worker for offline support
+├── assets/
+│   ├── images/            # Word images (to be added)
+│   │   ├── cat.jpg
+│   │   ├── dog.jpg
+│   │   └── ...
+│   └── audio/             # Pronunciation audio files (to be added)
+│       ├── cat.mp3
+│       ├── dog.mp3
+│       ├── success.mp3    # Success sound
+│       ├── button.mp3     # Button click sound
+│       └── ...
+└── README.md              # This file
+```
+
+## Adding Content 📝
+
+### Images
+Add word images to `assets/images/` directory:
+- Format: JPG or WebP recommended
+- Size: Minimum 200x200px, square aspect ratio preferred
+- Naming: Use exact word names (e.g., `cat.jpg`, `dog.jpg`)
+
+### Audio Files
+Add pronunciation audio to `assets/audio/` directory:
+- Format: MP3 for broad compatibility
+- Quality: Clear, child-friendly voice
+- Naming: Use exact word names (e.g., `cat.mp3`, `dog.mp3`)
+
+### Adding New Words
+Edit the `getWordData()` method in `script.js`:
+
+```javascript
+animals: [
+    { 
+        word: 'elephant', 
+        phonetic: '/ˈɛləfənt/', 
+        image: 'assets/images/elephant.jpg', 
+        audio: 'assets/audio/elephant.mp3' 
+    },
+    // ... more words
+]
+```
+
+## Technical Requirements 📱
+
+- **Target Device**: iPhone 8 (375x667px)
+- **Touch Targets**: Minimum 44px as per Apple guidelines
+- **Audio Format**: MP3 for iOS Safari compatibility
+- **Image Format**: JPG with WebP support
+- **No External Dependencies**: Pure HTML/CSS/JavaScript
+- **Offline Capable**: Service Worker for offline functionality
+
+## Features in Detail 🔍
+
+### Game Flow
+1. **Welcome Screen**: Large start button and settings access
+2. **Category Selection**: Choose from Animals, Colors, Numbers, Shapes
+3. **Game Screen**: Word display with image, audio, and pronunciation practice
+4. **Success Screen**: Celebration and progress summary
+
+### Audio System
+- Automatic pronunciation playback
+- Manual repeat functionality
+- Volume controls in settings
+- iOS Safari audio unlock handling
+
+### Speech Recognition (Optional)
+- Web Speech API integration
+- Simple word matching
+- Fallback to manual "Good Job" button
+- Can be disabled in settings
+
+### Progress Tracking
+- Local storage for offline persistence
+- Per-category progress indicators
+- Word completion tracking
+- Settings preservation
+
+## Browser Compatibility 🌐
+
+- **Primary Target**: iOS Safari (iPhone 8+)
+- **Secondary Support**: Chrome Mobile, Firefox Mobile
+- **Desktop**: All modern browsers for testing
+
+## Performance Optimizations ⚡
+
+- Lazy loading of images and audio
+- CSS transforms for animations
+- Minimal DOM manipulation
+- Service Worker caching
+- Compressed assets (when added)
+
+## Accessibility 👥
+
+- Large touch targets (60px minimum)
+- High contrast colors
+- Clear, readable fonts
+- Visual feedback for all interactions
+- Audio fallbacks for hearing impaired
+
+## Development Tips 💡
+
+### Testing on iPhone
+1. Connect iPhone to same WiFi as development machine
+2. Find computer's IP address: `ipconfig getifaddr en0` (Mac) or `ipconfig` (Windows)
+3. Visit `http://[IP_ADDRESS]:8000` on iPhone
+4. Add to home screen for full-screen experience
+
+### Debugging
+- Enable Web Inspector on iPhone: Settings > Safari > Advanced > Web Inspector
+- Connect to Mac and use Safari Developer Tools
+- Console logs are available for debugging
+
+### Adding Content
+- Use high-quality, child-appropriate images
+- Record clear pronunciation audio (or use text-to-speech tools)
+- Test on actual device for best user experience
+
+## Customization 🎨
+
+### Colors
+Modify CSS custom properties in `style.css` for color scheme changes.
+
+### Fonts
+Currently uses system fonts for fast loading. Can be customized in CSS.
+
+### Categories
+Add new categories by:
+1. Adding data to `getWordData()` method
+2. Adding category button to HTML
+3. Adding progress indicator
+4. Adding images and audio files
+
+## Troubleshooting 🔧
+
+### Audio Issues
+- Ensure HTTPS or localhost for audio autoplay
+- Check iOS Silent Mode switch
+- Verify audio file formats and paths
+
+### Speech Recognition
+- Requires HTTPS in production
+- May not work in all browsers
+- Fallback button always available
+
+### Offline Mode
+- Requires initial online load
+- Service Worker needs to cache all resources
+- Test offline mode after initial load
+
+## Future Enhancements 🚀
+
+- [ ] More word categories
+- [ ] Difficulty levels
+- [ ] Parent dashboard
+- [ ] Multi-language support
+- [ ] Achievement system
+- [ ] Analytics and learning insights
+
+## License 📄
+
+This project is created for educational purposes. Feel free to modify and use for non-commercial applications.
 
 ---
 
-**Happy Learning! 🎉**
-
-Made with ❤️ for young learners everywhere.
+**Made with ❤️ for young learners**

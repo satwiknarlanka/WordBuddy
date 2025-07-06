@@ -1,44 +1,48 @@
-# WordBuddy Audio Assets
+# WordBuddy Audio Files
 
-This folder contains all the audio files for the WordBuddy pronunciation learning game.
+This directory contains pronunciation audio files for the WordBuddy game.
 
-## Audio Folder Structure
-Create subfolders for each category:
-- `animals/` - Animal pronunciation audio (cat.mp3, dog.mp3, etc.)
-- `colors/` - Color pronunciation audio (red.mp3, blue.mp3, etc.)
-- `numbers/` - Number pronunciation audio (1.mp3, 2.mp3, etc.)
-- `shapes/` - Shape pronunciation audio (circle.mp3, square.mp3, etc.)
-- `alphabets/` - Letter pronunciation audio (a.mp3, b.mp3, etc.)
-- `days/` - Day pronunciation audio (monday.mp3, tuesday.mp3, etc.)
-- `months/` - Month pronunciation audio (january.mp3, february.mp3, etc.)
+## Required Audio Files
+
+### Word Pronunciation Files
+- cat.mp3, dog.mp3, bird.mp3, fish.mp3, cow.mp3, duck.mp3, pig.mp3, sheep.mp3
+- red.mp3, blue.mp3, green.mp3, yellow.mp3, pink.mp3, orange.mp3, purple.mp3, black.mp3  
+- one.mp3, two.mp3, three.mp3, four.mp3, five.mp3, six.mp3, seven.mp3, eight.mp3
+- circle.mp3, square.mp3, triangle.mp3, star.mp3, heart.mp3, diamond.mp3, oval.mp3, rectangle.mp3
+
+### System Sound Files
+- success.mp3 - Played when child completes a word successfully
+- button.mp3 - Played when buttons are pressed
 
 ## Audio Requirements
-- Format: MP3 (best compatibility)
-- Quality: 128kbps or higher
+- Format: MP3 for broad iOS compatibility
+- Quality: Clear, child-friendly voice
 - Duration: 1-3 seconds per word
-- Clear British English pronunciation
-- No background noise
-- Child-friendly voice (female preferred)
+- Volume: Normalized levels
 
-## Audio File Naming
-File names should match the word exactly:
-- `cat.mp3` for the word "cat"
-- `red.mp3` for the word "red"
-- `monday.mp3` for the word "monday"
+## Creating Audio Files
 
-## Speech Synthesis Fallback
-If audio files are not available, the game will use browser speech synthesis with British English voice as fallback.
+### Using Text-to-Speech (Quick Solution)
+You can use online TTS services or system TTS to generate audio files:
 
-## Recording Your Own Audio
-1. Use a quiet environment
-2. Speak clearly in British English
-3. Keep recordings short (1-3 seconds)
-4. Use consistent volume levels
-5. Save as MP3 format
-6. Name files to match the words exactly
+**macOS:**
+```bash
+say "cat" -o cat.wav && ffmpeg -i cat.wav cat.mp3
+```
 
-## Professional Audio Options
-- Hire a British English voice actor
-- Use text-to-speech services with British voices
-- Record yourself if you have a clear British accent
-- Use AI voice generation tools
+**Windows:**
+Use PowerShell with built-in TTS or online services
+
+### Professional Audio (Recommended)
+- Record with clear, friendly voice
+- Use child-appropriate tone and pace
+- Ensure consistent volume levels
+- Include slight pause before/after word
+
+## File Naming Convention
+- Use exact word text as filename
+- All lowercase
+- No spaces or special characters  
+- .mp3 extension
+
+Example: "cat" word → cat.mp3

@@ -199,16 +199,26 @@ class WordBuddyGame {
     }
     
     initializeSpeechRecognition() {
+        console.log('🎤 Initializing speech recognition...');
+        
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            console.log('🎤 SpeechRecognition class found:', SpeechRecognition);
+            
             this.speechRecognition = new SpeechRecognition();
             this.speechRecognition.continuous = false;
             this.speechRecognition.interimResults = false;
-            this.speechRecognition.lang = 'en-GB'; // British English
+            
+            // Try a simple English language code - some browsers need this
+            try {
+                this.speechRecognition.lang = 'en-US'; // Most widely supported
+                console.log('🎤 Language set to en-US');
+            } catch (error) {
+                console.warn('Could not set language, using default:', error);
+            }
             
             // Mobile-specific optimizations
             this.speechRecognition.maxAlternatives = 3;
-            this.speechRecognition.serviceURI = null; // Let browser choose best service
             
             this.speechRecognition.onstart = () => {
                 console.log('🎤 Speech recognition started');
@@ -230,6 +240,7 @@ class WordBuddyGame {
             
             this.speechRecognition.onerror = (event) => {
                 console.warn('🎤 Speech recognition error:', event.error, event);
+                console.log('🎤 Full error event:', event); // DEBUG: Let's see exactly what's happening
                 this.handleSpeechError(event.error);
             };
             
@@ -900,6 +911,15 @@ class WordBuddyGame {
         }
         
         this.resetListenButton();
+        
+        // For language-not-supported, just disable speech recognition gracefully
+        if (errorType === 'language-not-supported') {
+            console.warn('� Speech recognition language not supported on this device');
+            this.speechSupported = false;
+            this.updateSpeechUI();
+            this.showMessage('🎤 Speech recognition not available on this device. Use "👍 I Said It!" to continue playing!', 'info');
+            return;
+        }
         
         // Provide specific feedback based on error type
         let message = '';
