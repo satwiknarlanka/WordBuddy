@@ -299,12 +299,14 @@ export class UIManager {
                 listenBtn.innerHTML = '<span>🎤 Listening...</span>';
                 listenBtn.style.background = 'linear-gradient(45deg, #FF5722, #FF9800)';
                 listenBtn.disabled = true;
+                listenBtn.title = 'Say the word clearly!';
                 break;
             case 'ready':
             default:
                 listenBtn.innerHTML = '<span>🎤 Listen to Me</span>';
                 listenBtn.style.background = 'linear-gradient(45deg, #4ECDC4, #44A08D)';
                 listenBtn.disabled = false;
+                listenBtn.title = 'Click to start speech recognition';
                 break;
         }
     }

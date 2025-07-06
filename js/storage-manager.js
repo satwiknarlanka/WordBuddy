@@ -16,7 +16,8 @@ export class StorageManager {
         months: [],
         colors: [],
         numbers: [],
-        shapes: []
+        shapes: [],
+        mixed: []
     };
 
     static DEFAULT_SETTINGS = {

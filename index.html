@@ -96,6 +96,10 @@
                     <div class="emoji">🗓️</div>
                     Months
                 </button>
+                <button class="category-btn" data-category="mixed">
+                    <div class="emoji">🎲</div>
+                    Mixed
+                </button>
             </div>
             <button id="category-back-btn" class="btn btn-back">
                 ← Back
@@ -106,47 +110,58 @@
     <!-- Game Screen -->
     <div id="game-screen" class="screen">
         <div class="screen-content">
-            <!-- Score and Progress -->
-            <div class="score-display" id="current-score">⭐ 0/5</div>
+            <!-- Top Navigation Bar -->
+            <div class="top-nav">
+                <button id="game-back-btn" class="btn btn-back nav-btn">
+                    ← Categories
+                </button>
+                <div class="score-display" id="current-score">⭐ 0/5</div>
+                <div class="word-navigation">
+                    <button id="prev-word-nav-btn" class="btn btn-nav" disabled>
+                        ◀ Previous
+                    </button>
+                    <button id="next-word-nav-btn" class="btn btn-nav" disabled>
+                        Next ▶
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
             <div class="game-progress">
                 <div class="game-progress-bar" id="game-progress"></div>
             </div>
             
-            <!-- Word Display -->
-            <div class="word-display">
-                <div class="word-image-container">
-                    <img id="word-image" class="word-image" src="" alt="" style="display: none;">
+            <!-- Main Game Content -->
+            <div class="game-main">
+                <!-- Word Display -->
+                <div class="word-display">
+                    <div class="word-image-container">
+                        <img id="word-image" class="word-image" src="" alt="" style="display: none;">
+                    </div>
+                    <div class="word-text" id="word-text">Word</div>
+                    <div class="phonetic-hint" id="phonetic-hint">/pronunciation/</div>
                 </div>
-                <div class="word-text" id="word-text">Word</div>
-                <div class="phonetic-hint" id="phonetic-hint">/pronunciation/</div>
-            </div>
 
-            <!-- Game Controls -->
-            <div class="game-controls" id="speech-controls">
-                <div class="control-row">
-                    <button id="play-audio-btn" class="btn btn-primary">
-                        🎤 Listen to Me
-                    </button>
-                    <button id="repeat-btn" class="btn btn-secondary">
-                        � Hear Word
-                    </button>
+                <!-- Game Controls -->
+                <div class="game-controls" id="speech-controls">
+                    <div class="control-row">
+                        <button id="play-audio-btn" class="btn btn-primary">
+                            🎤 Listen to Me
+                        </button>
+                        <button id="repeat-btn" class="btn btn-secondary">
+                            🔊 Hear Word
+                        </button>
+                    </div>
+                    <div class="control-row">
+                        <button id="record-btn" class="btn btn-warning">
+                            🔄 Practice Word
+                        </button>
+                        <button id="good-job-btn" class="btn btn-success">
+                            👍 I Said It!
+                        </button>
+                    </div>
                 </div>
-                <div class="control-row">
-                    <button id="record-btn" class="btn btn-warning">
-                        🔄 Practice Word
-                    </button>
-                    <button id="good-job-btn" class="btn btn-success">
-                        👍 I Said It!
-                    </button>
-                </div>
-                <button id="next-word-btn" class="btn btn-primary" disabled>
-                    ➡️ Next Word
-                </button>
             </div>
-            
-            <button id="game-back-btn" class="btn btn-back">
-                ← Back to Categories
-            </button>
         </div>
     </div>
 
@@ -185,6 +200,8 @@
                     <span class="settings-label">Speech Recognition</span>
                     <button id="speech-toggle" class="toggle-btn active">ON</button>
                 </div>
+                
+
             </div>
 
             <!-- Microphone Permission -->

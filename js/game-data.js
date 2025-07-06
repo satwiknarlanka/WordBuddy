@@ -108,6 +108,29 @@ export class GameData {
                 { word: 'diamond', phonetic: '/ˈdaɪəmənd/', image: 'assets/images/diamond.jpg', audio: 'assets/audio/diamond.mp3' },
                 { word: 'oval', phonetic: '/ˈəʊvəl/', image: 'assets/images/oval.jpg', audio: 'assets/audio/oval.mp3' },
                 { word: 'rectangle', phonetic: '/ˈrektæŋɡəl/', image: 'assets/images/rectangle.jpg', audio: 'assets/audio/rectangle.mp3' }
+            ],
+            mixed: [
+                // A fun mix from all categories
+                { word: 'cat', phonetic: '/kæt/', image: 'assets/images/cat.jpg', audio: 'assets/audio/cat.mp3' },
+                { word: 'red', phonetic: '/red/', image: 'assets/images/red.jpg', audio: 'assets/audio/red.mp3' },
+                { word: 'three', phonetic: '/θriː/', image: 'assets/images/three.jpg', audio: 'assets/audio/three.mp3' },
+                { word: 'circle', phonetic: '/ˈsɜːkəl/', image: 'assets/images/circle.jpg', audio: 'assets/audio/circle.mp3' },
+                { word: 'A', phonetic: '/eɪ/', image: 'assets/images/letter_a.jpg', audio: 'assets/audio/letter_a.mp3' },
+                { word: 'Monday', phonetic: '/ˈmʌndeɪ/', image: 'assets/images/monday.jpg', audio: 'assets/audio/monday.mp3' },
+                { word: 'dog', phonetic: '/dɒɡ/', image: 'assets/images/dog.jpg', audio: 'assets/audio/dog.mp3' },
+                { word: 'blue', phonetic: '/bluː/', image: 'assets/images/blue.jpg', audio: 'assets/audio/blue.mp3' },
+                { word: 'star', phonetic: '/stɑː/', image: 'assets/images/star.jpg', audio: 'assets/audio/star.mp3' },
+                { word: 'five', phonetic: '/faɪv/', image: 'assets/images/five.jpg', audio: 'assets/audio/five.mp3' },
+                { word: 'bird', phonetic: '/bɜːd/', image: 'assets/images/bird.jpg', audio: 'assets/audio/bird.mp3' },
+                { word: 'green', phonetic: '/ɡriːn/', image: 'assets/images/green.jpg', audio: 'assets/audio/green.mp3' },
+                { word: 'heart', phonetic: '/hɑːt/', image: 'assets/images/heart.jpg', audio: 'assets/audio/heart.mp3' },
+                { word: 'B', phonetic: '/biː/', image: 'assets/images/letter_b.jpg', audio: 'assets/audio/letter_b.mp3' },
+                { word: 'elephant', phonetic: '/ˈeləfənt/', image: 'assets/images/elephant.jpg', audio: 'assets/audio/elephant.mp3' },
+                { word: 'yellow', phonetic: '/ˈjeləʊ/', image: 'assets/images/yellow.jpg', audio: 'assets/audio/yellow.mp3' },
+                { word: 'square', phonetic: '/skweə/', image: 'assets/images/square.jpg', audio: 'assets/audio/square.mp3' },
+                { word: 'seven', phonetic: '/ˈsevən/', image: 'assets/images/seven.jpg', audio: 'assets/audio/seven.mp3' },
+                { word: 'lion', phonetic: '/ˈlaɪən/', image: 'assets/images/lion.jpg', audio: 'assets/audio/lion.mp3' },
+                { word: 'Friday', phonetic: '/ˈfraɪdeɪ/', image: 'assets/images/friday.jpg', audio: 'assets/audio/friday.mp3' }
             ]
         };
     }

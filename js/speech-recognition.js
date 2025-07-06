@@ -134,11 +134,19 @@ export class SpeechRecognitionManager {
         this.speechRecognition.onstart = () => {
             console.log('🎤 Speech recognition started');
             this.speechRecognitionActive = true;
+            
+            if (this.onListeningStart) {
+                this.onListeningStart();
+            }
         };
         
         this.speechRecognition.onend = () => {
             console.log('🎤 Speech recognition ended');
             this.speechRecognitionActive = false;
+            
+            if (this.onListeningEnd) {
+                this.onListeningEnd();
+            }
         };
         
         this.speechRecognition.onresult = (event) => {

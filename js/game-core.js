@@ -82,6 +82,15 @@ export class GameCore {
             this.uiManager.updateListenButton('ready');
         };
         
+        this.speechManager.onListeningStart = () => {
+            this.uiManager.updateListenButton('listening');
+            this.uiManager.showMessage('🎤 Say the word clearly!', 'listening');
+        };
+        
+        this.speechManager.onListeningEnd = () => {
+            this.uiManager.updateListenButton('ready');
+        };
+        
         // Show browser compatibility warning if needed
         if (!this.speechManager.speechSupported) {
             const userAgent = navigator.userAgent.toLowerCase();
@@ -201,6 +210,24 @@ export class GameCore {
             });
         }
         
+        // Previous Word button
+        const prevBtn = document.getElementById('prev-word-nav-btn');
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                this.audioManager.playButtonSound();
+                this.previousWord();
+            });
+        }
+        
+        // Next Word navigation button (different from completion button)
+        const nextNavBtn = document.getElementById('next-word-nav-btn');
+        if (nextNavBtn) {
+            nextNavBtn.addEventListener('click', () => {
+                this.audioManager.playButtonSound();
+                this.nextWord();
+            });
+        }
+        
         // I Said It button
         const goodJobBtn = document.getElementById('good-job-btn');
         if (goodJobBtn) {
@@ -250,8 +277,13 @@ export class GameCore {
                 e.target.textContent = this.settings.speechRecognition ? 'ON' : 'OFF';
                 this.saveSettings();
                 this.updateSpeechUI();
+                
+                // If disabling speech recognition, save settings
+                this.saveSettings();
+                this.updateSpeechUI();
             });
         }
+
         
         // Microphone permission button
         const micBtn = document.getElementById('mic-permission-btn');
@@ -309,6 +341,12 @@ export class GameCore {
         const word = this.currentWords[this.currentWordIndex];
         this.uiManager.displayWord(word);
         
+        // Update speech UI for current state
+        this.updateSpeechUI();
+        
+        // Update navigation buttons
+        this.updateNavigationButtons();
+        
         // Auto-play audio after a short delay
         setTimeout(() => {
             this.playCurrentWordAudio();
@@ -350,10 +388,11 @@ export class GameCore {
             return;
         }
         
+        // Start single recognition session
         const started = this.speechManager.start();
-        if (started) {
-            this.uiManager.updateListenButton('listening');
-            this.uiManager.showMessage('🎤 Say the word clearly!', 'listening');
+        if (!started) {
+            console.warn('🎤 Failed to start speech recognition');
+            this.uiManager.showMessage('Could not start speech recognition. Try again!', 'error');
         }
     }
 
@@ -375,9 +414,16 @@ export class GameCore {
             this.uiManager.showMessage(`Excellent! You said "${result}"`, 'success');
             this.handleCorrectPronunciation();
         } else {
-            console.log('🔄 Speech recognition - try again');
-            this.uiManager.showMessage(`I heard "${result}". Try saying "${currentWord}" again!`, 'info');
-            this.uiManager.showEncouragement();
+            console.log('🔄 Speech recognition: try again');
+            let feedback = `I heard "${result}". `;
+            
+            if (analysis.similarity > 0.3) {
+                feedback += 'Close! Try again.';
+            } else {
+                feedback += `Try saying "${currentWord}" more clearly.`;
+            }
+            
+            this.uiManager.showMessage(feedback, 'info', 3000);
         }
     }
 
@@ -434,6 +480,12 @@ export class GameCore {
         
         // Save progress
         const currentWord = this.currentWords[this.currentWordIndex].word;
+        
+        // Ensure the category exists in progress object
+        if (!this.progress[this.currentCategory]) {
+            this.progress[this.currentCategory] = [];
+        }
+        
         if (!this.progress[this.currentCategory].includes(currentWord)) {
             this.progress[this.currentCategory].push(currentWord);
             this.saveProgress();
@@ -448,6 +500,15 @@ export class GameCore {
         }, GameData.getGameConfig().autoAdvanceDelay);
     }
 
+    previousWord() {
+        if (this.currentWordIndex > 0) {
+            this.currentWordIndex--;
+            this.displayCurrentWord();
+            this.updateGameProgress();
+            this.updateNavigationButtons();
+        }
+    }
+
     nextWord() {
         this.currentWordIndex++;
         
@@ -456,6 +517,7 @@ export class GameCore {
         } else {
             this.displayCurrentWord();
             this.updateGameProgress();
+            this.updateNavigationButtons();
         }
     }
 
@@ -475,6 +537,11 @@ export class GameCore {
     updateSpeechUI() {
         const speechAvailable = this.speechManager.isAvailable();
         this.uiManager.updateSpeechUI(speechAvailable);
+        
+        // Update listen button  
+        if (speechAvailable) {
+            this.uiManager.updateListenButton('ready');
+        }
     }
 
     updateAllUI() {
@@ -610,5 +677,18 @@ export class GameCore {
     // Debug function
     debugSpeechRecognition() {
         return this.speechManager.generateDebugReport();
+    }
+
+    updateNavigationButtons() {
+        const prevBtn = document.getElementById('prev-word-nav-btn');
+        const nextBtn = document.getElementById('next-word-nav-btn');
+        
+        if (prevBtn) {
+            prevBtn.disabled = this.currentWordIndex === 0;
+        }
+        
+        if (nextBtn) {
+            nextBtn.disabled = this.currentWordIndex >= this.currentWords.length - 1;
+        }
     }
 }
